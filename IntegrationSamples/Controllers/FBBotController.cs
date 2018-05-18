@@ -50,7 +50,7 @@ namespace IntegrationSamples.Controllers
                         if (string.IsNullOrWhiteSpace(message?.message?.text))
                             continue;
 
-                        var msg = "You said: " + message.message.text;
+                        var msg = $"Hello from Taras Buha! Your id is '{message.sender.id}', you said: " + message.message.text;
                         var json = $@" {{recipient: {{  id: {message.sender.id}}},message: {{text: ""{msg}"" }}}}";
                         PostRaw($"https://graph.facebook.com/v2.6/me/messages?access_token={AppSettings.access_token}", json);
                     }
