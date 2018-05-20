@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using IntegrationSamples.Infrastructure;
 using IntegrationSamples.Models;
 using Microsoft.AspNet.SignalR;
 
@@ -51,11 +52,17 @@ namespace IntegrationSamples.Controllers
                         if (string.IsNullOrWhiteSpace(message?.message?.text))
                             continue;
 
-                        var msg = $"Hello from Taras Buha! Your id is '{message.sender.id}', you said: " + message.message.text;
-                        var json = $@" {{recipient: {{  id: {message.sender.id}}},message: {{text: ""{msg}"" }}}}";
+                        var msg = message.message.text;
 
-                        var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
-                        notificationHub.Clients.All.addNewMessageToPage(message.sender.id, msg);                        
+                        try
+                        {
+                            var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
+                            notificationHub.Clients.All.addNewMessageToPage(message.sender.id, msg);
+                        }
+                        catch (Exception ex)
+                        {
+                            new SendFBMessage().Send(message.sender.id, $"Error: {ex.Message}. Please wait few minutes!");
+                        }
                     }
                 }
             });

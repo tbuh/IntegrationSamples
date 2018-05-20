@@ -39,7 +39,9 @@
                 $('#sendmessage').click(function () {
                     // Call the Send method on the hub.
                     //$('#displayname').val()
-                    chat.server.send(fbUserId, $('#message').val());
+                    var agentMessage = $('#message').val();
+                    $('#discussion').append('<li><strong>You</strong>: ' + htmlEncode(agentMessage) + '</li>');
+                    chat.server.send(fbUserId, agentMessage);
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
                 });
