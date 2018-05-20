@@ -26,5 +26,12 @@ namespace IntegrationSamples.Controllers
 
             return View();
         }
+
+        public ActionResult Chat()
+        {
+            ViewBag.Message = "Your Chat page.";
+
+            return View();
+        }
     }
 }

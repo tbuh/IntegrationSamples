@@ -10,6 +10,14 @@ namespace IntegrationSamples
     public static class AppSettings
     {
 
+        public static string ConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
+            }
+        }
+
         public static string verify_token
         {
             get

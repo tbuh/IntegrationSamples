@@ -13,6 +13,9 @@ namespace IntegrationSamples
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Register the default hubs route: ~/signalr/hubs
+
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
