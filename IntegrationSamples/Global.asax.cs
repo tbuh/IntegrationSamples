@@ -13,7 +13,7 @@ namespace IntegrationSamples
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private string con = AppSettings.ConnectionString;
+        //private string con = AppSettings.ConnectionString;
 
         protected void Application_Start()
         {
