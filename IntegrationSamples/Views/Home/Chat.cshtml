@@ -48,7 +48,7 @@
                     //$('#displayname').val()
                     var agentMessage = $('#message').val();
                     $('#discussion').append('<li><strong>You</strong>: ' + htmlEncode(agentMessage) + '</li>');
-                    chat.server.send(fbUserId, agentMessage);
+                    chat.server.send(agentMessage);
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
                 });
