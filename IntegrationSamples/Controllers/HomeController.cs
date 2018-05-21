@@ -27,6 +27,13 @@ namespace IntegrationSamples.Controllers
             return View();
         }
 
+        [Route("Home/AgentReply")]
+        public ActionResult AgentReply()
+        {
+            
+            return View();
+        }
+
         public ActionResult Chat()
         {
             ViewBag.Message = "Your Chat page.";
