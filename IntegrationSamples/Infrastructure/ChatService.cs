@@ -73,7 +73,7 @@ namespace IntegrationSamples.Infrastructure
                 AddedOn = DateTime.Now
             };
             iSDbContext.Entry(m).State = EntityState.Added;
-            iSDbContext.SaveChangesAsync();
+            iSDbContext.SaveChanges();
             return m;
         }
 
