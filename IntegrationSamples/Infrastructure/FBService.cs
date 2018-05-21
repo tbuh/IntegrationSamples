@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntegrationSamples.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,10 +8,18 @@ using System.Web;
 
 namespace IntegrationSamples.Infrastructure
 {
-    public class SendFBMessage
+    public class FBService
     {
+        public void Send(ChatMessage chatMessage)
+        {
+            string userId = chatMessage.ChatRoom.UserId;
+            string message = chatMessage.Text;
+            Send(userId, message);
+        }
+
         public void Send(string userId, string message)
         {
+
             var json = $@" {{recipient: {{  id: {userId}}},message: {{text: ""{message}"" }}}}";
 
             PostRaw($"https://graph.facebook.com/v2.6/me/messages?access_token={AppSettings.access_token}", json);

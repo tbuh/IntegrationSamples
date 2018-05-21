@@ -19,6 +19,21 @@ namespace IntegrationSamples.Models
             Database.SetInitializer(new CreateDatabaseIfNotExists<ISDbContext>());
         }
 
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<ChatUser> ChatUsers { get; set; }
+        public DbSet<ChatClient> ChatClients { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<AgentScore> AgentScores { get; set; }
+
+        //public List<ChatMessage> GetData(DateTime afterDate, string userId)
+        //{
+        //    return ChatMessages.Where(a => a.UserId == userId && a.AddedOn > afterDate).OrderByDescending(a => a.AddedOn).ToList();            
+        //}
+
+        public ChatUser GetChatUser(string agentId)
+        {
+            var user = ChatUsers.Include(u => u.ConnectedClients).SingleOrDefault(u => u.AgentId == agentId);
+            return user;
+        }
     }
 }

@@ -14,6 +14,9 @@ namespace IntegrationSamples.Controllers
 {
     public class FBBotController : Controller
     {
+        private ChatService chatService = new ChatService();
+        private FBService fBService = new FBService();
+
         // GET: FBBot
         public ActionResult Index()
         {
@@ -41,33 +44,66 @@ namespace IntegrationSamples.Controllers
 
         [ActionName("Receive")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ReceivePost(BotRequest data)
+        public async Task<ActionResult> ReceivePost(BotRequest data)
         {
-            Task.Factory.StartNew(() =>
+            foreach (var entry in data.entry)
             {
-                foreach (var entry in data.entry)
+                foreach (var message in entry.messaging)
                 {
-                    foreach (var message in entry.messaging)
+                    if (string.IsNullOrWhiteSpace(message?.message?.text))
+                        continue;
+
+                    var fbmsg = message.message.text;
+                    try
                     {
-                        if (string.IsNullOrWhiteSpace(message?.message?.text))
-                            continue;
+                        var chatMessage = chatService.AddFBMessage(message.sender.id, fbmsg);
 
-                        var msg = message.message.text;
-
-                        try
+                        if (chatMessage.ChatRoom.AgentId != null)
                         {
-                            var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
-                            notificationHub.Clients.All.addNewMessageToPage(message.sender.id, msg);
-                        }
-                        catch (Exception ex)
-                        {
-                            new SendFBMessage().Send(message.sender.id, $"Error: {ex.Message}. Please wait few minutes!");
+                            var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
+                            if (chatUser != null)
+                            {
+                                var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
+                                foreach (var connectedClient in chatUser.ConnectedClients)
+                                {
+                                    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                                }
+                            }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        fBService.Send(message.sender.id, $"Error: {ex.Message}. Please wait few minutes!");
+                    }
                 }
-            });
+            }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }        
+        }
+
+        public ActionResult TestReceive()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public async Task<ActionResult> TestReceive(IntegrationSamples.Models.ChatMessage msg)
+        {
+            var chatMessage = chatService.AddFBMessage(msg.Platform, msg.Text);
+
+            if (chatMessage.ChatRoom.AgentId != null)
+            {
+                var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
+                if (chatUser != null)
+                {
+                    var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
+                    foreach (var connectedClient in chatUser.ConnectedClients)
+                    {
+                        await(Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                    }
+                }
+            }
+            return View(msg);
+        }
     }
 }

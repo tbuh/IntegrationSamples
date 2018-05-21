@@ -4,10 +4,17 @@
 
 <h2>Chat</h2>
 <div class="container">
-    <input type="text" id="message" />
-    <input type="button" id="sendmessage" value="Send" />
-    <input type="hidden" id="displayname" />
-    <ul id="discussion"></ul>
+    <div>
+        <input type="button" id="closeAgent" value="Close" />
+        <input type="button" id="connectAgent" value="Connect" />
+    </div>
+    <div>
+        <div>Message</div>
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />
+        <input type="hidden" id="displayname" />
+        <ul id="discussion"></ul>
+    </div>
 </div>
 @section scripts {
     <!--Script references. -->
@@ -44,6 +51,15 @@
                     chat.server.send(fbUserId, agentMessage);
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
+                });
+
+                $('#connectAgent').click(function () {
+                    // Call the Send method on the hub.
+                    chat.server.openChat();
+                });
+                $('#closeAgent').click(function () {
+                    // Call the Send method on the hub.
+                    chat.server.closeChat();
                 });
             });
         });

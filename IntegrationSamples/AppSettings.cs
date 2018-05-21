@@ -10,6 +10,14 @@ namespace IntegrationSamples
     public static class AppSettings
     {
 
+        public static string AzureStorageConnectionString
+        {
+            get
+            {
+                return Setting<string>("vbuh_AzureStorageConnectionString");
+            }
+        }
+
         public static string ConnectionString
         {
             get
