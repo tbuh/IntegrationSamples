@@ -197,8 +197,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\agentReply.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Cell.PNG" />
+    <Content Include="Content\Images\Home delivery.PNG" />
+    <Content Include="Content\Images\Iamhungry.PNG" />
+    <Content Include="Content\Images\Live support.PNG" />
+    <Content Include="Content\Images\News.PNG" />
+    <Content Include="Content\Images\Supportb.PNG" />
+    <Content Include="Content\Images\Weather.PNG" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -236,6 +244,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Chat.cshtml" />
+    <Content Include="Views\Home\AgentReply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
