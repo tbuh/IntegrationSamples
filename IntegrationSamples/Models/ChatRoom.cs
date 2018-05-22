@@ -12,8 +12,17 @@ namespace IntegrationSamples.Models
         public string AgentId { get; set; }
         public bool IsClosed { get; set; }
         public DateTime OpenDate { get; set; }
+
+        public DateTime? LastAgentReply { get; set; }
+        public DateTime? LastUserReply { get; set; }
+
         public DateTime? CloseDate { get; set; }
 
         public ICollection<ChatMessage> ChatMessages { get; set; }
+        public IEnumerable<ChatMessage> GetUnreadUserMessages()
+        {
+            var dtFrom = LastAgentReply ?? DateTime.MinValue;
+            return ChatMessages.Where(m => m.AddedOn >= dtFrom && m.IsFromPlatform);
+        }
     }
 }

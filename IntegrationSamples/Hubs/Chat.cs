@@ -28,25 +28,18 @@ namespace IntegrationSamples.Hubs
         public void CloseChat()
         {
             messageService.CloseChatRoom(this.Context.ConnectionId);
+            Clients.Caller.addNewMessageToPage("Info", "chat is closed!");
         }
 
         public void OpenChat()
         {
             var room = messageService.Open(this.Context.ConnectionId, this.Context.ConnectionId);
-            foreach (var item in room.ChatMessages)
-            {
-                Clients.Caller.addNewMessageToPage("Facebook User", item.Text);
-            }
-        }
+            Clients.Caller.addNewMessageToPage("Info", "chat is ready!");
 
-        public override Task OnConnected()
-        {
-            var room = messageService.Open(this.Context.ConnectionId, this.Context.ConnectionId);
-            foreach (var item in room.ChatMessages)
+            foreach (var item in room.GetUnreadUserMessages())
             {
                 Clients.Caller.addNewMessageToPage("Facebook User", item.Text);
             }
-            return base.OnConnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)

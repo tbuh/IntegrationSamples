@@ -216,6 +216,10 @@
     <Compile Include="Migrations\201805212055269_AddChatTables.Designer.cs">
       <DependentUpon>201805212055269_AddChatTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805221359263_AddedDates.cs" />
+    <Compile Include="Migrations\201805221359263_AddedDates.Designer.cs">
+      <DependentUpon>201805221359263_AddedDates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AgentScore.cs" />
     <Compile Include="Models\ChatRoom.cs" />
@@ -270,12 +274,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Chat.cshtml" />
+    <Content Include="Views\Home\Social.cshtml" />
     <Content Include="Views\FBBot\TestReceive.cshtml" />
-    <Content Include="Views\Home\AgentReply.cshtml" />
+    <Content Include="Views\Home\MyCloud.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -299,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805212055269_AddChatTables.resx">
       <DependentUpon>201805212055269_AddChatTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805221359263_AddedDates.resx">
+      <DependentUpon>201805221359263_AddedDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

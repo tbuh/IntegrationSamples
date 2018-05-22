@@ -8,35 +8,14 @@ namespace IntegrationSamples.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
+        public ActionResult MyCloud()
+        {            
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Social()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        [Route("Home/AgentReply")]
-        public ActionResult AgentReply()
-        {
-            
-            return View();
-        }
-
-        public ActionResult Chat()
-        {
-            ViewBag.Message = "Your Chat page.";
+            ViewBag.Message = "Your Social page.";
 
             return View();
         }

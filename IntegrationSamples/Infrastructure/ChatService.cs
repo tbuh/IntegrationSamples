@@ -43,7 +43,6 @@ namespace IntegrationSamples.Infrastructure
                 room.UserId = userId;
                 iSDbContext.Entry(room).State = EntityState.Modified;
             }
-
             var chatMessage = new ChatMessage()
             {
                 ChatRoom = room,
@@ -52,6 +51,7 @@ namespace IntegrationSamples.Infrastructure
                 Platform = "FB",
                 Text = messageText
             };
+            room.LastUserReply = chatMessage.AddedOn;
 
             iSDbContext.Entry(chatMessage).State = EntityState.Added;
 
@@ -62,9 +62,9 @@ namespace IntegrationSamples.Infrastructure
 
         public ChatMessage AddMessage(string connectionId, string messageText)
         {
-            var chatClient = GetChatClient(connectionId);
-            var room = GetChatRoomByAgentIdOrAvailable(chatClient.ChatUser.AgentId);
-
+            //var chatClient = GetChatClient(connectionId);
+            //var room = GetChatRoomByAgentIdOrAvailable(chatClient.ChatUser.AgentId);
+            var room = GetChatRoomByAgentIdOrAvailable(connectionId);
             ChatMessage m = new ChatMessage
             {
                 IsFromPlatform = false,
@@ -72,6 +72,7 @@ namespace IntegrationSamples.Infrastructure
                 ChatRoom = room,
                 AddedOn = DateTime.Now
             };
+            room.LastAgentReply = m.AddedOn;
             iSDbContext.Entry(m).State = EntityState.Added;
             iSDbContext.SaveChanges();
             return m;
@@ -82,24 +83,33 @@ namespace IntegrationSamples.Infrastructure
             var room = GetChatRoomByAgentIdOrAvailable(agentId);
             room.CloseDate = DateTime.Now;
             room.IsClosed = true;
-            iSDbContext.Entry(room).State = EntityState.Modified;
+            if (room.ChatMessages.Count > 0)
+                iSDbContext.Entry(room).State = EntityState.Modified;
+            else
+                iSDbContext.Entry(room).State = EntityState.Deleted;
             iSDbContext.SaveChanges();
         }
 
         public void Disconnect(string connectionId)
         {
             var chatClient = GetChatClient(connectionId);
-            if (chatClient == null) return;
-
-            var user = chatClient.ChatUser;
-            user.ConnectedClients.Remove(chatClient);
-            if (!user.ConnectedClients.Any())
+            if (chatClient != null)
             {
-                user.IsOnline = false;
-                iSDbContext.Entry(user).State = EntityState.Modified;
+                var user = chatClient.ChatUser;
+                user.ConnectedClients.Remove(chatClient);
+                if (!user.ConnectedClients.Any())
+                {
+                    user.IsOnline = false;
+                    iSDbContext.Entry(user).State = EntityState.Modified;
+                }
+                iSDbContext.Entry(chatClient).State = EntityState.Deleted;
             }
-            iSDbContext.Entry(chatClient).State = EntityState.Deleted;
 
+            var chatRoom = GetChatRoomByAgentId(connectionId);
+            if (chatRoom != null && chatRoom.ChatMessages.Count == 0)
+            {
+                iSDbContext.Entry(chatRoom).State = EntityState.Deleted;
+            }
             iSDbContext.SaveChanges();
         }
 
@@ -119,12 +129,12 @@ namespace IntegrationSamples.Infrastructure
             else
             {
                 user.IsOnline = true;
-                if (!user.ConnectedClients.Any(cc => cc.ConnectionId == connectionId))
-                {
-                    var uConnection = new ChatClient { ChatUser = user, ConnectionId = connectionId };
-                    user.ConnectedClients.Add(uConnection);
-                    iSDbContext.Entry(uConnection).State = EntityState.Added;
-                }
+                //if (!user.ConnectedClients.Any(cc => cc.ConnectionId == connectionId))
+                //{
+                //    var uConnection = new ChatClient { ChatUser = user, ConnectionId = connectionId };
+                //    user.ConnectedClients.Add(uConnection);
+                //    iSDbContext.Entry(uConnection).State = EntityState.Added;
+                //}
             }
 
             var room = GetChatRoomByAgentIdOrAvailable(agentId);
@@ -143,7 +153,7 @@ namespace IntegrationSamples.Infrastructure
             {
                 room.AgentId = agentId;
                 iSDbContext.Entry(room).State = EntityState.Modified;
-            }            
+            }
 
             iSDbContext.SaveChanges();
             return room;
@@ -164,6 +174,12 @@ namespace IntegrationSamples.Infrastructure
         private ChatRoom GetChatRoomByAgentIdOrAvailable(string agentId)
         {
             var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && (uch.AgentId == agentId || uch.AgentId == null));
+            return room;
+        }
+
+        private ChatRoom GetChatRoomByAgentId(string agentId)
+        {
+            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => uch.AgentId == agentId);
             return room;
         }
 

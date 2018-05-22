@@ -60,15 +60,16 @@ namespace IntegrationSamples.Controllers
 
                         if (chatMessage.ChatRoom.AgentId != null)
                         {
-                            var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
-                            if (chatUser != null)
-                            {
+                            //var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
+                            //if (chatUser != null)
+                            //{
                                 var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
-                                foreach (var connectedClient in chatUser.ConnectedClients)
-                                {
-                                    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
-                                }
-                            }
+                                //foreach (var connectedClient in chatUser.ConnectedClients)
+                                //{
+                                //    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                                //}
+                            await (Task)notificationHub.Clients.Client(chatMessage.ChatRoom.AgentId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                            //}
                         }
                     }
                     catch (Exception ex)
@@ -93,15 +94,16 @@ namespace IntegrationSamples.Controllers
 
             if (chatMessage.ChatRoom.AgentId != null)
             {
-                var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
-                if (chatUser != null)
-                {
-                    var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
-                    foreach (var connectedClient in chatUser.ConnectedClients)
-                    {
-                        await(Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
-                    }
-                }
+                //var chatUser = chatService.GetChatUserByAgentId(chatMessage.ChatRoom.AgentId);
+                //if (chatUser != null)
+                //{
+                var notificationHub = GlobalHost.ConnectionManager.GetHubContext<Hubs.Chat>();
+                //foreach (var connectedClient in chatUser.ConnectedClients)
+                //{
+                //    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                //}
+                await (Task)notificationHub.Clients.Client(chatMessage.ChatRoom.AgentId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                //}
             }
             return View(msg);
         }
