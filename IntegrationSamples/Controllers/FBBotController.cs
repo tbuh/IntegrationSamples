@@ -68,7 +68,7 @@ namespace IntegrationSamples.Controllers
                                 //{
                                 //    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
                                 //}
-                            await (Task)notificationHub.Clients.Client(chatMessage.ChatRoom.AgentId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                            await (Task)notificationHub.Clients.Client(chatMessage.ChatRoom.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
                             //}
                         }
                     }

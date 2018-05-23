@@ -42,6 +42,30 @@ namespace IntegrationSamples
             }
         }
 
+        public static string ClientID
+        {
+            get
+            {
+                return Setting<string>("Purecloud:ClientID");
+            }
+        }
+
+        public static string ClientSecret
+        {
+            get
+            {
+                return Setting<string>("Purecloud:ClientSecret");
+            }
+        }
+
+        public static string RedirectUri
+        {
+            get
+            {
+                return Setting<string>("Purecloud:RedirectUri");
+            }
+        }
+
         private static T Setting<T>(string name)
         {
             string value = ConfigurationManager.AppSettings[name];

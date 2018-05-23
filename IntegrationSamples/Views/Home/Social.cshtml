@@ -2,20 +2,34 @@
     ViewBag.Title = "Chat";
 }
 
-<h2>Chat</h2>
-<div class="container">
-    <div>
-        <input type="button" id="closeAgent" value="Close" />
-        <input type="button" id="connectAgent" value="Connect" />
+<div style="margin-top:15px;">
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" id="AgentId" value="@ViewBag.Id" />
+            <input type="checkbox" id="toggle-event" data-toggle="toggle" data-on="Online" data-off="Offline">
+
+        </div>
+        <div class="col-md-8">
+            Hello @ViewBag.Username!
+        </div>
+
     </div>
+
+    <div class="row" style="margin-top:15px;">
+        <div class="col-md-12">
+            <input type="text" id="message" />
+            <input type="button" id="sendmessage" value="Send" />
+            <input type="hidden" id="displayname" />
+            <ul id="discussion"></ul>
+        </div>
+    </div>
+
     <div>
-        <div>Message</div>
-        <input type="text" id="message" />
-        <input type="button" id="sendmessage" value="Send" />
-        <input type="hidden" id="displayname" />
-        <ul id="discussion"></ul>
+       
     </div>
 </div>
+
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
@@ -53,14 +67,14 @@
                     $('#message').val('').focus();
                 });
 
-                $('#connectAgent').click(function () {
-                    // Call the Send method on the hub.
-                    chat.server.openChat();
-                });
-                $('#closeAgent').click(function () {
-                    // Call the Send method on the hub.
-                    chat.server.closeChat();
-                });
+                $('#toggle-event').change(function () {
+                    if ($(this).prop('checked')) {
+                        chat.server.openChat($('#AgentId').val());
+                    }
+                    else {
+                        chat.server.closeChat();
+                    }
+                })
             });
         });
         // This optional function html-encodes messages for display in the page.

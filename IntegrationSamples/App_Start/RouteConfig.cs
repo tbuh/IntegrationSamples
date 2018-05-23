@@ -15,6 +15,11 @@ namespace IntegrationSamples
 
             // Register the default hubs route: ~/signalr/hubs
 
+            routes.MapRoute(
+                name: "signin-Purecloud",
+                url: "signin-Purecloud",
+                defaults: new { controller = "Home", action = "Social" }
+            );
 
             routes.MapRoute(
                 name: "Default",

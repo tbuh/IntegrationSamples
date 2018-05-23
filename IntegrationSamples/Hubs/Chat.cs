@@ -22,7 +22,21 @@ namespace IntegrationSamples.Hubs
         {
             //Clients.All.addNewMessageToPage(name, message);
             var chatMessage = messageService.AddMessage(this.Context.ConnectionId, message);
-            fBService.Send(chatMessage);
+            if (chatMessage == null)
+            {
+                Clients.Caller.addNewMessageToPage("Info", "Go online!");
+            }
+            else
+            {
+                try
+                {
+                    fBService.Send(chatMessage);
+                }
+                catch (Exception ex)
+                {
+                    Clients.Caller.addNewMessageToPage("Info", ex.Message);
+                }                
+            }
         }
 
         public void CloseChat()
@@ -31,9 +45,9 @@ namespace IntegrationSamples.Hubs
             Clients.Caller.addNewMessageToPage("Info", "chat is closed!");
         }
 
-        public void OpenChat()
+        public void OpenChat(string agentId)
         {
-            var room = messageService.Open(this.Context.ConnectionId, this.Context.ConnectionId);
+            var room = messageService.Open(agentId, this.Context.ConnectionId);
             Clients.Caller.addNewMessageToPage("Info", "chat is ready!");
 
             foreach (var item in room.GetUnreadUserMessages())
@@ -44,7 +58,7 @@ namespace IntegrationSamples.Hubs
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            messageService.Disconnect(this.Context.ConnectionId);
+            messageService.CloseChatRoom(this.Context.ConnectionId);
             return base.OnDisconnected(stopCalled);
         }
     }

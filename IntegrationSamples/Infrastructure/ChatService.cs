@@ -12,21 +12,15 @@ namespace IntegrationSamples.Infrastructure
 {
     public class ChatService
     {
-        //private static CloudQueue _cloudQueue;
         private ISDbContext iSDbContext;
         public ChatService()
         {
             iSDbContext = new ISDbContext();
-            //_cloudQueue = GetCloudQueue();
         }
 
-        //public static void Init()
-        //{
-        //    _cloudQueue.CreateIfNotExists();
-        //}
         public ChatMessage AddFBMessage(string userId, string messageText)
         {
-            var room = GetChatRoomByUserId(userId);
+            var room = GetChatRoomAvailableForUser(userId);
             if (room == null)
             {
                 room = new ChatRoom
@@ -62,9 +56,9 @@ namespace IntegrationSamples.Infrastructure
 
         public ChatMessage AddMessage(string connectionId, string messageText)
         {
-            //var chatClient = GetChatClient(connectionId);
-            //var room = GetChatRoomByAgentIdOrAvailable(chatClient.ChatUser.AgentId);
-            var room = GetChatRoomByAgentIdOrAvailable(connectionId);
+            var room = GetChatRoomByConnection(connectionId);
+            if (room == null) return null;
+
             ChatMessage m = new ChatMessage
             {
                 IsFromPlatform = false,
@@ -78,9 +72,11 @@ namespace IntegrationSamples.Infrastructure
             return m;
         }
 
-        public void CloseChatRoom(string agentId)
+        public void CloseChatRoom(string connectionId)
         {
-            var room = GetChatRoomByAgentIdOrAvailable(agentId);
+            var room = GetChatRoomByConnection(connectionId);
+            if (room == null) return;
+
             room.CloseDate = DateTime.Now;
             room.IsClosed = true;
             if (room.ChatMessages.Count > 0)
@@ -90,54 +86,11 @@ namespace IntegrationSamples.Infrastructure
             iSDbContext.SaveChanges();
         }
 
-        public void Disconnect(string connectionId)
-        {
-            var chatClient = GetChatClient(connectionId);
-            if (chatClient != null)
-            {
-                var user = chatClient.ChatUser;
-                user.ConnectedClients.Remove(chatClient);
-                if (!user.ConnectedClients.Any())
-                {
-                    user.IsOnline = false;
-                    iSDbContext.Entry(user).State = EntityState.Modified;
-                }
-                iSDbContext.Entry(chatClient).State = EntityState.Deleted;
-            }
-
-            var chatRoom = GetChatRoomByAgentId(connectionId);
-            if (chatRoom != null && chatRoom.ChatMessages.Count == 0)
-            {
-                iSDbContext.Entry(chatRoom).State = EntityState.Deleted;
-            }
-            iSDbContext.SaveChanges();
-        }
-
         public ChatRoom Open(string agentId, string connectionId)
         {
             var user = iSDbContext.GetChatUser(agentId);
-            if (user == null)
-            {
-                user = new ChatUser()
-                {
-                    AgentId = agentId,
-                    IsOnline = true,
-                    ConnectedClients = new List<ChatClient>()
-                };
-                iSDbContext.Entry(user).State = EntityState.Added;
-            }
-            else
-            {
-                user.IsOnline = true;
-                //if (!user.ConnectedClients.Any(cc => cc.ConnectionId == connectionId))
-                //{
-                //    var uConnection = new ChatClient { ChatUser = user, ConnectionId = connectionId };
-                //    user.ConnectedClients.Add(uConnection);
-                //    iSDbContext.Entry(uConnection).State = EntityState.Added;
-                //}
-            }
+            var room = GetChatRoomAvailableForAgent();
 
-            var room = GetChatRoomByAgentIdOrAvailable(agentId);
             if (room == null)
             {
                 room = new ChatRoom
@@ -154,36 +107,24 @@ namespace IntegrationSamples.Infrastructure
                 room.AgentId = agentId;
                 iSDbContext.Entry(room).State = EntityState.Modified;
             }
-
+            room.ConnectionId = connectionId;
             iSDbContext.SaveChanges();
             return room;
         }
 
-        private ChatClient GetChatClient(string connectionId)
+        private ChatRoom GetChatRoomByConnection(string connectionId)
         {
-            var chatClient = iSDbContext.ChatClients.Include(c => c.ChatUser).SingleOrDefault(uch => uch.ConnectionId == connectionId);
-            return chatClient;
-        }
-
-        public ChatUser GetChatUserByAgentId(string agentId)
-        {
-            var ChatUser = iSDbContext.ChatUsers.Include(c => c.ConnectedClients).Single(uch => uch.AgentId == agentId);
-            return ChatUser;
-        }
-
-        private ChatRoom GetChatRoomByAgentIdOrAvailable(string agentId)
-        {
-            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && (uch.AgentId == agentId || uch.AgentId == null));
+            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => uch.ConnectionId == connectionId);
             return room;
         }
 
-        private ChatRoom GetChatRoomByAgentId(string agentId)
+        private ChatRoom GetChatRoomAvailableForAgent()
         {
-            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => uch.AgentId == agentId);
+            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && uch.AgentId == null);
             return room;
         }
 
-        private ChatRoom GetChatRoomByUserId(string userId)
+        private ChatRoom GetChatRoomAvailableForUser(string userId)
         {
             var room = iSDbContext.ChatRooms.FirstOrDefault(uch => !uch.IsClosed && (uch.UserId == userId || uch.UserId == null));
             return room;

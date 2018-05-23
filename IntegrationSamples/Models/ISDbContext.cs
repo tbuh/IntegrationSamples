@@ -21,7 +21,7 @@ namespace IntegrationSamples.Models
 
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
-        public DbSet<ChatClient> ChatClients { get; set; }
+        //public DbSet<ChatClient> ChatClients { get; set; }
         public DbSet<ChatRoom> ChatRooms { get; set; }
         public DbSet<AgentScore> AgentScores { get; set; }
 
@@ -32,7 +32,7 @@ namespace IntegrationSamples.Models
 
         public ChatUser GetChatUser(string agentId)
         {
-            var user = ChatUsers.Include(u => u.ConnectedClients).SingleOrDefault(u => u.AgentId == agentId);
+            var user = ChatUsers.SingleOrDefault(u => u.Id == agentId);
             return user;
         }
     }
