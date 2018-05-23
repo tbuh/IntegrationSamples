@@ -56,7 +56,7 @@ namespace IntegrationSamples.Infrastructure
 
         public ChatMessage AddMessage(string connectionId, string messageText)
         {
-            var room = GetChatRoomByConnection(connectionId);
+            var room = GetChatRoomAvailableByConnection(connectionId);
             if (room == null) return null;
 
             ChatMessage m = new ChatMessage
@@ -74,7 +74,7 @@ namespace IntegrationSamples.Infrastructure
 
         public void CloseChatRoom(string connectionId)
         {
-            var room = GetChatRoomByConnection(connectionId);
+            var room = GetChatRoomAvailableByConnection(connectionId);
             if (room == null) return;
 
             room.CloseDate = DateTime.Now;
@@ -112,9 +112,9 @@ namespace IntegrationSamples.Infrastructure
             return room;
         }
 
-        private ChatRoom GetChatRoomByConnection(string connectionId)
+        private ChatRoom GetChatRoomAvailableByConnection(string connectionId)
         {
-            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => uch.ConnectionId == connectionId);
+            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && uch.ConnectionId == connectionId);
             return room;
         }
 
