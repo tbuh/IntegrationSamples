@@ -89,7 +89,7 @@ namespace IntegrationSamples.Infrastructure
         public ChatRoom Open(string agentId, string connectionId)
         {
             var user = iSDbContext.GetChatUser(agentId);
-            var room = GetChatRoomAvailableForAgent();
+            var room = GetChatRoomAvailableForAgent(agentId);
 
             if (room == null)
             {
@@ -118,9 +118,9 @@ namespace IntegrationSamples.Infrastructure
             return room;
         }
 
-        private ChatRoom GetChatRoomAvailableForAgent()
+        private ChatRoom GetChatRoomAvailableForAgent(string agentId)
         {
-            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && uch.AgentId == null);
+            var room = iSDbContext.ChatRooms.Include(r => r.ChatMessages).FirstOrDefault(uch => !uch.IsClosed && (uch.AgentId == null || uch.AgentId == agentId));
             return room;
         }
 
