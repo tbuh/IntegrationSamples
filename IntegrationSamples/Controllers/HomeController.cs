@@ -19,8 +19,9 @@ namespace IntegrationSamples.Controllers
     {
         private const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
         public ActionResult MyCloud()
-        {            
-            return View();
+        {
+            var users = new GamificationService().GetTop5Scores();
+            return View(users);
         }
 
         //public ActionResult Social()

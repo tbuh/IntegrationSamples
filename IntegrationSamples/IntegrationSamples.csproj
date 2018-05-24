@@ -230,6 +230,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FBBotController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SkypeBotController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,9 +239,14 @@
     <Compile Include="Infrastructure\ChatService.cs" />
     <Compile Include="Infrastructure\ChatUserService.cs" />
     <Compile Include="Infrastructure\FBService.cs" />
+    <Compile Include="Infrastructure\GamificationService.cs" />
     <Compile Include="Migrations\201805232049304_Init.cs" />
     <Compile Include="Migrations\201805232049304_Init.Designer.cs">
       <DependentUpon>201805232049304_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805240755594_Gamification.cs" />
+    <Compile Include="Migrations\201805240755594_Gamification.Designer.cs">
+      <DependentUpon>201805240755594_Gamification.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AgentScore.cs" />
@@ -313,6 +319,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\SkypeBot\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -333,6 +340,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805232049304_Init.resx">
       <DependentUpon>201805232049304_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805240755594_Gamification.resx">
+      <DependentUpon>201805240755594_Gamification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

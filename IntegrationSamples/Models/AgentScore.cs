@@ -9,6 +9,7 @@ namespace IntegrationSamples.Models
     {
         public int Id { get; set; }
         public string AgentId { get; set; }
+        public string Name { get; set; }
         public int Score { get; set; }
     }
 }

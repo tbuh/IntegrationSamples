@@ -12,6 +12,7 @@ namespace IntegrationSamples.Hubs
     {
         private ChatService messageService = new ChatService();
         private FBService fBService = new FBService();
+        private GamificationService gamificationService = new GamificationService();
 
         public void Hello()
         {
@@ -31,6 +32,7 @@ namespace IntegrationSamples.Hubs
                 try
                 {
                     fBService.Send(chatMessage);
+                    gamificationService.AddPoint(chatMessage.ChatRoom.AgentId);
                 }
                 catch (Exception ex)
                 {
