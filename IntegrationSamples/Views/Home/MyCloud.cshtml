@@ -21,7 +21,7 @@
                 @for (int i = 0; i < 5; i++)
                 {
                     <tr>
-                        <td width="10%">@(i + 1).</td>
+                        <td>@(i + 1).</td>
                         @if (Model.Count > i)
                         {
                             <td>@Model[i].Score</td>
@@ -29,8 +29,8 @@
                         }
                         else
                         {
-                            <td width="45%"></td>
-                            <td width="45%"></td>
+                            <td></td>
+                            <td></td>
                         }
                     </tr>
                 }
