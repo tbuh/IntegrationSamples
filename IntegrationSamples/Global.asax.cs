@@ -23,6 +23,7 @@ namespace IntegrationSamples
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            PureCloudService.Init();
             //here in Application Start we will start Sql Dependency
             //SqlDependency.Start(con);
         }

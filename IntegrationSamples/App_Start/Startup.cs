@@ -56,6 +56,7 @@ namespace IntegrationSamples
             //app.UseTwoFactorRememberBrowserCookie(
             //DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
             app.MapSignalR();
+            
             //app.SetDefaultSignInAsAuthenticationType("External");
             //app.UseOAuthAuthorizationServer("PureCloud", options=>
             //{

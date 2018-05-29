@@ -66,6 +66,8 @@ namespace IntegrationSamples
             }
         }
 
+        public const string PureCloudUri = "https://api.mypurecloud.ie";
+
         private static T Setting<T>(string name)
         {
             string value = ConfigurationManager.AppSettings[name];
