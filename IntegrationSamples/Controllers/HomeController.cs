@@ -18,10 +18,15 @@ namespace IntegrationSamples.Controllers
     public class HomeController : Controller
     {
         private const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
-        public ActionResult MyCloud()
+        //public ActionResult MyCloud()
+        //{
+        //    var users = new GamificationService().GetTop5Scores();
+        //    return View(users);
+        //}
+
+        public ActionResult TestView()
         {
-            var users = new GamificationService().GetTop5Scores();
-            return View(users);
+            return View();
         }
 
         //public ActionResult Social()
@@ -29,10 +34,24 @@ namespace IntegrationSamples.Controllers
         //    return View();
         //}
 
-        public async Task<ActionResult> Social()
+        public ActionResult Social()
         {
-            ViewBag.Message = "Your Social page.";
+            return View();
+        }
 
+        public async Task<ActionResult> MyCloud()
+        {            
+            return await LoginOrRunAction(() =>
+            {
+                ViewBag.Message = "Your Social page.";
+                var users = new GamificationService().GetTop5Scores();
+                return View(users);
+            });
+        }
+
+        #region security
+        private async Task<ActionResult> LoginOrRunAction(Func<ActionResult> action)
+        {
             var authToken = GetAuthTokenFromSession();
 
             if (Request.QueryString["code"] != null)
@@ -61,8 +80,7 @@ namespace IntegrationSamples.Controllers
                 return Redirect($"https://login.mypurecloud.ie/oauth/authorize?client_id={AppSettings.ClientID}" +
                                 $"&response_type=code&redirect_uri={HttpUtility.UrlEncode(AppSettings.RedirectUri)}");
             }
-
-            return View();
+            return action();
         }
 
 
@@ -109,5 +127,7 @@ namespace IntegrationSamples.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+
+        #endregion
     }
 }

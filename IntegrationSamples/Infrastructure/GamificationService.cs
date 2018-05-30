@@ -24,7 +24,14 @@ namespace IntegrationSamples.Infrastructure
 
         public List<ChatUser> GetTop5Scores()
         {
-            return iSDbContext.ChatUsers.OrderByDescending(u => u.Score).Take(5).ToList();
+            try
+            {
+                return iSDbContext.ChatUsers.OrderByDescending(u => u.Score).Take(5).ToList();
+            }
+            catch (Exception ex)
+            {
+                return new List<ChatUser>();
+            }            
         }             
     }
 }

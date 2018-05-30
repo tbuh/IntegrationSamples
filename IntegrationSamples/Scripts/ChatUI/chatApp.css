@@ -1,0 +1,28 @@
+﻿#chat-icon {
+    position: fixed;
+    /*right: 20px;
+            bottom: 20px;*/
+    cursor: pointer;
+    background-image: url('/Scripts/ChatUI/chat-icon.png');
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 10px #D5F2FF;
+}
+
+    #chat-icon::before {
+        content: 'click me';
+        position: absolute;
+        top: -9px;
+        left: -25px;
+        font-size: 1.1em;
+        border: 1px solid #797676;
+        padding: 1px 6px;
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+.bubble-image {
+    width: 100%;
+}

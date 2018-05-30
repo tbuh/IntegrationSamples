@@ -18,13 +18,13 @@ namespace IntegrationSamples
             routes.MapRoute(
                 name: "signin-Purecloud",
                 url: "signin-Purecloud",
-                defaults: new { controller = "Home", action = "Social" }
+                defaults: new { controller = "Home", action = "MyCloud" }
             );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Social", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "MyCloud", id = UrlParameter.Optional }
             );
         }
     }

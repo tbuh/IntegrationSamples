@@ -330,7 +330,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Connected Services\vbuhAzureStorage\ConnectedService.json" />
+    <Content Include="Scripts\ChatUI\chat-icon.png" />
+    <Content Include="Scripts\ChatUI\chat-ui.js.map" />
+    <Content Include="Scripts\ChatUI\chat-ui.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ChatUI\chat-ui.css" />
+    <Content Include="Scripts\ChatUI\chat-ui.js" />
+    <Content Include="Scripts\ChatUI\chat-ui.min.css" />
+    <Content Include="Scripts\ChatUI\chat-ui.min.js" />
+    <Content Include="Scripts\ChatUI\chatApp.css" />
+    <Content Include="Scripts\ChatUI\chatApp.js" />
+    <Content Include="Scripts\ChatUI\theme-dark-star.css" />
+    <Content Include="Scripts\ChatUI\theme-dark-star.min.css" />
+    <Content Include="Scripts\ChatUI\theme-green-leaf.css" />
+    <Content Include="Scripts\ChatUI\theme-green-leaf.min.css" />
+    <Content Include="Scripts\ChatUI\theme-white-bill.css" />
+    <Content Include="Scripts\ChatUI\theme-white-bill.min.css" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -343,6 +358,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="testpage.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -360,6 +376,8 @@
     <Content Include="Views\FBBot\TestReceive.cshtml" />
     <Content Include="Views\Home\MyCloud.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\TestView.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

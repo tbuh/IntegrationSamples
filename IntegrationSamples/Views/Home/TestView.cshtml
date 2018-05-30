@@ -1,0 +1,128 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat-UI | Example - Themes</title>
+    <script src="~/Scripts/ChatUI/chat-ui.js"></script>
+    <link href="~/Scripts/ChatUI/chat-ui.css" rel="stylesheet" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/darkula.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="chat-icon"></div>
+        <div id="chat"></div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/ChatUI/chatApp.js"></script>
+    <script>
+        var themes = {
+            'basic': null,
+            'dark-star': '../Scripts/ChatUI/theme-dark-star.css',
+            'green-leaf': '../Scripts/ChatUI/theme-green-leaf.css',
+            'white-bill': '../Scripts/ChatUI/theme-white-bill.css'
+        };
+        var currentTheme;
+
+        $('.change-theme').click(function () {
+            var theme = $(this).data().theme;
+            if (currentTheme) {
+                $('#' + currentTheme).remove();
+            }
+            if (themes[theme]) {
+                $('head').append([
+                    '<link href="',
+                    themes[theme],
+                    '" id="',
+                    theme,
+                    '" rel="stylesheet" media="all" />'
+                ].join(''));
+
+                currentTheme = theme;
+            }
+        });
+
+            //$(document).ready(function () {
+            //    var phrases = [
+            //        'Ok',
+            //        'How can I help you?',
+            //        'Nice weather today, don\'t you think?',
+            //        'Do you want one of our representative will call you back?',
+            //        'Do you like our product?',
+            //        'Where have you heard about us?',
+            //        'Glad you still use our products',
+            //        'thank you for waiting',
+            //        'Hello again!',
+            //        ':)',
+            //        '^_^'
+            //    ];
+
+            //    var chat = ChatUI({
+            //        title: 'John Doe',
+            //        avatar: './john-doe.jpg',
+            //        subtitle: 'consultant'
+            //    }).render('#chat');
+
+            //    var $chatIcon = $('#chat-icon');
+
+            //    $chatIcon.click(function () {
+            //        chat.trigger('open-chat');
+            //        $chatIcon.hide();
+            //    });
+
+            //    // chat.trigger('add-phrase', {side: 'chat', message:'Hello'});
+            //    // chat.trigger('add-phrase', {message:'Hello'});
+            //    chat.trigger('add-phrase', 'Hello');
+
+            //    var timeoutId = null;
+            //    var chatMessage = function (msg) {
+            //        if (msg === 'close') {
+            //            chat.trigger('close-chat');
+            //        } else if (msg === 'image') {
+            //            var imgNumber = Math.floor(Math.random() * 3) + 1;
+            //            chat.trigger('add-phrase', '<img class="bubble-image" src="./image-0' + imgNumber + '.jpg">');
+            //        } else if (msg === 'clear') {
+            //            chat.trigger('clear-dialog');
+            //        } else if (!timeoutId) {
+            //            var waitTime = Math.floor(Math.random() * 2000) + 600;
+            //            setTimeout(function () {
+            //                chat.trigger('is-typing');
+            //            }, 500);
+            //            timeoutId = setTimeout(function () {
+            //                var phraseNumber = Math.floor(Math.random() * (phrases.length - 1));
+            //                chat.trigger('add-phrase', phrases[phraseNumber]);
+            //                timeoutId = null;
+            //            }, waitTime);
+            //        }
+            //    };
+
+            //    chat.trigger('add-phrase', '<img src="./smile-hi.gif">');
+            //    chat.trigger('add-phrase', [
+            //        'You can use different commands:',
+            //        '<ul>',
+            //        '<li>image</li>',
+            //        '<li>clear</li>',
+            //        '<li>close</li>',
+            //        '</ul>',
+            //        'Just type them in input below'
+            //    ].join(''));
+
+            //    chat.on('user-send-message', chatMessage);
+
+            //    chat.on('chat-closed', function (data) {
+            //        console.log('chat-closed', data);
+            //        $chatIcon.show();
+            //    });
+            //});
+    </script>
+</body>
+</html>
+
