@@ -1,5 +1,5 @@
 ﻿#chat-icon {
-    position: fixed;
+    /*position: fixed;*/
     /*right: 20px;
             bottom: 20px;*/
     cursor: pointer;
@@ -12,8 +12,8 @@
 }
 
     #chat-icon::before {
-        content: 'click me';
-        position: absolute;
+        content: 'Сlick me';
+        /*position: absolute;*/
         top: -9px;
         left: -25px;
         font-size: 1.1em;
@@ -25,4 +25,8 @@
 
 .bubble-image {
     width: 100%;
+}
+
+.grid-item-general:hover #chat-icon:before {
+    display: none;
 }
