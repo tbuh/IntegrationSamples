@@ -2,12 +2,24 @@
 var setChatMessage;
 
 $(document).ready(function () {
+
+    var isBotActivated = false;
+    $(".openpopBot").click(function (e) {
+        setChatMessage("Please ask BOT...");
+        isBotActivated = true;
+    });
+
     var fbUserId = "";
     var chat = $.connection.chat;
     // Create a function that the hub can call back to display messages.
     chat.client.addNewMessageToPage = function (name, message) {
         fbUserId = name;
-        setChatMessage(message);
+        setChatMessage("FB User:" + message);
+    };
+
+    chat.client.addBotMessageToPage = function (name, message) {
+        isBotActivated = false;
+        setChatMessage(name + ": " + message);
     };
 
     var chatUI = ChatUI({
@@ -21,7 +33,13 @@ $(document).ready(function () {
     $.connection.hub.start().done(function () {
         getChatMessage = function (agentMessage) {
             // Call the Send method on the hub.
-            chat.server.send(agentMessage);
+            if (isBotActivated) {
+                chat.server.botSupport(agentMessage);
+            }
+            else {
+                chat.server.send(agentMessage);
+            }
+            isBotActivated = false;
         }
     });
 
@@ -42,16 +60,20 @@ $(document).ready(function () {
             chatUI.trigger('close-chat');
         } else if (msg === 'clear') {
             chatUI.trigger('clear-dialog');
-        } else if (!timeoutId) {
-            var waitTime = Math.floor(Math.random() * 2000) + 600;
-            setTimeout(function () {
-                chatUI.trigger('is-typing');
-            }, 500);
-            timeoutId = setTimeout(function () {
-                timeoutId = null;
-            }, waitTime);
+        } else if (msg === 'bot') {
+            isBotActivated = true;
+            setChatMessage('Please ask BOT...');
         }
-        if (msg !== 'close' && msg !== 'clear')
+        //else if (!timeoutId) {
+        //    var waitTime = Math.floor(Math.random() * 2000) + 600;
+        //    setTimeout(function () {
+        //        chatUI.trigger('is-typing');
+        //    }, 500);
+        //    timeoutId = setTimeout(function () {
+        //        timeoutId = null;
+        //    }, waitTime);
+        //}
+        if (msg !== 'close' && msg !== 'clear' && msg !== 'bot')
             getChatMessage(msg);
     };
 
@@ -60,6 +82,7 @@ $(document).ready(function () {
         '<ul>',
         '<li>clear</li>',
         '<li>close</li>',
+        '<li>bot</li>',
         '</ul>',
         'Just type them in input below'
     ].join(''));

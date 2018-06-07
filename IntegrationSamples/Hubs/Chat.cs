@@ -61,7 +61,7 @@ namespace IntegrationSamples.Hubs
         public void BotSupport(string question)
         {
             QuestionService qs = new QuestionService();
-            Clients.Caller.addBotMessageToPage("Bot:", qs.GetAnswer(question));
+            Clients.Caller.addBotMessageToPage("Bot", qs.GetAnswer(question));
         }
 
         public override Task OnDisconnected(bool stopCalled)
