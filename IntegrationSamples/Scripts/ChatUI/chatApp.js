@@ -5,6 +5,17 @@ $(document).ready(function () {
 
     var isBotActivated = false;
     var isBotWeatherActivated = false;
+    var chatCommands = [
+        'You can use different commands:',
+        '<ul>',
+        '<li>clear</li>',
+        '<li>close</li>',
+        '<li>bot</li>',
+        '<li>weather</li>',
+        '</ul>',
+        'Just type them in input below'
+    ].join('');
+
     $(".openpopBot").click(function (e) {
         setChatMessage("Please ask BOT...");
         isBotActivated = true;
@@ -74,6 +85,7 @@ $(document).ready(function () {
             chatUI.trigger('close-chat');
         } else if (msg === 'clear') {
             chatUI.trigger('clear-dialog');
+            chatUI.trigger('add-phrase', chatCommands);
         } else if (msg === 'bot') {
             isBotActivated = true;
             setChatMessage('Please ask BOT...');
@@ -95,16 +107,7 @@ $(document).ready(function () {
             getChatMessage(msg);
     };
 
-    chatUI.trigger('add-phrase', [
-        'You can use different commands:',
-        '<ul>',
-        '<li>clear</li>',
-        '<li>close</li>',
-        '<li>bot</li>',
-        '<li>weather</li>',
-        '</ul>',
-        'Just type them in input below'
-    ].join(''));
+    chatUI.trigger('add-phrase', chatCommands);
 
     chatUI.on('user-send-message', chatMessage);
 
