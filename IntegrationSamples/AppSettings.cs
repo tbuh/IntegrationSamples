@@ -9,6 +9,13 @@ namespace IntegrationSamples
 {
     public static class AppSettings
     {
+        public static string OpenWeatherAppID
+        {
+            get
+            {
+                 return Setting<string>("OpenWeather:AppID");
+            }
+        }
 
         public static string AzureStorageConnectionString
         {

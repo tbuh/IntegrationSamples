@@ -281,8 +281,10 @@
     <Compile Include="Infrastructure\ChatUserService.cs" />
     <Compile Include="Infrastructure\FBService.cs" />
     <Compile Include="Infrastructure\GamificationService.cs" />
+    <Compile Include="Infrastructure\OpenWeatherMap.cs" />
     <Compile Include="Infrastructure\PureCloudService.cs" />
     <Compile Include="Infrastructure\QuestionService.cs" />
+    <Compile Include="Infrastructure\WeatherAPI.cs" />
     <Compile Include="Migrations\201805232049304_Init.cs" />
     <Compile Include="Migrations\201805232049304_Init.Designer.cs">
       <DependentUpon>201805232049304_Init.cs</DependentUpon>

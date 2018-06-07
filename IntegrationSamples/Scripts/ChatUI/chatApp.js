@@ -4,9 +4,15 @@ var setChatMessage;
 $(document).ready(function () {
 
     var isBotActivated = false;
+    var isBotWeatherActivated = false;
     $(".openpopBot").click(function (e) {
         setChatMessage("Please ask BOT...");
         isBotActivated = true;
+    });
+
+    $(".openpopWeather").click(function (e) {
+        setChatMessage("Please send me the location you are interested in.");
+        isBotWeatherActivated = true;
     });
 
     var fbUserId = "";
@@ -14,12 +20,17 @@ $(document).ready(function () {
     // Create a function that the hub can call back to display messages.
     chat.client.addNewMessageToPage = function (name, message) {
         fbUserId = name;
-        setChatMessage("FB User:" + message);
+        setChatMessage(name + ": " + message);
     };
 
     chat.client.addBotMessageToPage = function (name, message) {
         isBotActivated = false;
         setChatMessage(name + ": " + message);
+    };
+
+    chat.client.addBotWeatherToPage = function (message) {
+        isBotWeatherActivated = false;
+        setChatMessage(message);
     };
 
     var chatUI = ChatUI({
@@ -35,6 +46,9 @@ $(document).ready(function () {
             // Call the Send method on the hub.
             if (isBotActivated) {
                 chat.server.botSupport(agentMessage);
+            }
+            else if (isBotWeatherActivated) {
+                chat.server.getWeatherFor(agentMessage);
             }
             else {
                 chat.server.send(agentMessage);
@@ -64,6 +78,10 @@ $(document).ready(function () {
             isBotActivated = true;
             setChatMessage('Please ask BOT...');
         }
+        else if (msg === 'weather') {
+            isBotWeatherActivated = true;
+            setChatMessage('Please send me the location you are interested in.');
+        }
         //else if (!timeoutId) {
         //    var waitTime = Math.floor(Math.random() * 2000) + 600;
         //    setTimeout(function () {
@@ -73,7 +91,7 @@ $(document).ready(function () {
         //        timeoutId = null;
         //    }, waitTime);
         //}
-        if (msg !== 'close' && msg !== 'clear' && msg !== 'bot')
+        if (msg !== 'close' && msg !== 'clear' && msg !== 'bot' && msg !== 'weather')
             getChatMessage(msg);
     };
 
@@ -83,6 +101,7 @@ $(document).ready(function () {
         '<li>clear</li>',
         '<li>close</li>',
         '<li>bot</li>',
+        '<li>weather</li>',
         '</ul>',
         'Just type them in input below'
     ].join(''));

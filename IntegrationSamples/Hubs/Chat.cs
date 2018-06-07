@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using IntegrationSamples.Infrastructure;
@@ -37,8 +38,21 @@ namespace IntegrationSamples.Hubs
                 catch (Exception ex)
                 {
                     Clients.Caller.addNewMessageToPage("Info", ex.Message);
-                }                
+                }
             }
+        }
+
+
+        public async Task GetWeatherFor(string city)
+        {
+            var wapi = new WeatherAPI();
+            var results = await wapi.Get(city);
+            var sb = new StringBuilder(4);
+            foreach (var item in results.list.Where(i => i.Date > DateTime.Now).Take(3))
+            {
+                sb.AppendLine(item.ToString());
+            }
+            Clients.Caller.addBotWeatherToPage(sb.ToString());
         }
 
         public void CloseChat()
