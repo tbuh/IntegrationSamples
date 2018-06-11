@@ -40,7 +40,7 @@ namespace IntegrationSamples.Controllers
         }
 
         public async Task<ActionResult> MyCloud()
-        {            
+        {
             return await LoginOrRunAction(() =>
             {
                 ViewBag.Message = "Your Social page.";
@@ -48,6 +48,15 @@ namespace IntegrationSamples.Controllers
                 return View(users);
             });
         }
+
+        //public ActionResult MyCloud()
+        //{
+
+        //        ViewBag.Message = "Your Social page.";
+        //        var users = new GamificationService().GetTop5Scores();
+        //        return View(users);
+
+        //}
 
         #region security
         private async Task<ActionResult> LoginOrRunAction(Func<ActionResult> action)

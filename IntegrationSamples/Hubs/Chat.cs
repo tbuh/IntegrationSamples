@@ -83,5 +83,11 @@ namespace IntegrationSamples.Hubs
             messageService.CloseChatRoom(this.Context.ConnectionId);
             return base.OnDisconnected(stopCalled);
         }
+
+        public async Task GetSap()
+        {
+            var res = await new SAPService().Get();
+            Clients.Caller.setSap(res);
+        }
     }
 }

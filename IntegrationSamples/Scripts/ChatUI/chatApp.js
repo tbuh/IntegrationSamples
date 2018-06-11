@@ -16,6 +16,50 @@ $(document).ready(function () {
         'Just type them in input below'
     ].join('');
 
+    $(".openpopSAP").click(function (e) {
+        setChatMessage("SAP: sending request...");
+        chatUI.trigger('is-typing');
+
+        var data = null;
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                setChatMessage("SAP: " + this.responseText.split(":").join("\n").split(",").join("\n"));
+            }
+        });
+        
+        //setting request method
+        //API endpoint for API sandbox 
+        xhr.open("GET", "https://sandbox.api.sap.com/concur/api/v3.0/common/users?employeeID=ConcurConsultant");
+
+        //API endpoint with optional query parameters
+        //xhr.open("GET", "https://sandbox.api.sap.com/sapb1/b1s/v2/Orders({DocEntry})?$select=array");
+
+        //Available API Endpoints
+        //https://{host}:{port}/b1s/v2
+
+        //adding request headers
+        //xhr.setRequestHeader("demoDB", "string");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+        //API Key for API Sandbox
+        xhr.setRequestHeader("APIKey", "Qv3z8J83dK866pT8ZNbTVxsJ3FPFGcdB");
+
+
+        //Available Security Schemes for productive API Endpoints
+        //Basic Authentication
+
+        //Basic Auth : provide username:password in Base64 encoded in Authorization header
+        //xhr.setRequestHeader("Authorization", "Basic <Base64 encoded value>");
+
+        //sending request
+        xhr.send(data);
+
+    });
+
     $(".openpopBot").click(function (e) {
         setChatMessage("Please ask BOT...");
         isBotActivated = true;
@@ -32,6 +76,10 @@ $(document).ready(function () {
     chat.client.addNewMessageToPage = function (name, message) {
         fbUserId = name;
         setChatMessage(name + ": " + message);
+    };
+
+    chat.client.setSAP = function (message) {
+        setChatMessage("SAP: " + message);
     };
 
     chat.client.addBotMessageToPage = function (name, message) {

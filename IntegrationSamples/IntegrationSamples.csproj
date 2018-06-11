@@ -284,6 +284,7 @@
     <Compile Include="Infrastructure\OpenWeatherMap.cs" />
     <Compile Include="Infrastructure\PureCloudService.cs" />
     <Compile Include="Infrastructure\QuestionService.cs" />
+    <Compile Include="Infrastructure\SAPService.cs" />
     <Compile Include="Infrastructure\WeatherAPI.cs" />
     <Compile Include="Migrations\201805232049304_Init.cs" />
     <Compile Include="Migrations\201805232049304_Init.Designer.cs">
@@ -321,6 +322,7 @@
     <Content Include="Content\Images\Iamhungry.PNG" />
     <Content Include="Content\Images\Live support.PNG" />
     <Content Include="Content\Images\News.PNG" />
+    <Content Include="Content\Images\sap.png" />
     <Content Include="Content\Images\Supportb.PNG" />
     <Content Include="Content\Images\Weather.PNG" />
     <Content Include="favicon.ico" />
