@@ -2,7 +2,9 @@
 using IntegrationSamples.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System;
@@ -55,12 +57,20 @@ namespace IntegrationSamples
 
             //app.UseTwoFactorRememberBrowserCookie(
             //DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+            app.UseCors(CorsOptions.AllowAll);
             app.MapSignalR();
-            
+            //app.MapSignalR<Hubs.ChatHub>("chatHub");
+
+            app.Map("/signalr", map =>
+            {
+                map.UseCors(CorsOptions.AllowAll);
+                var hc = new HubConfiguration();
+                map.RunSignalR(hc);
+            });
             //app.SetDefaultSignInAsAuthenticationType("External");
             //app.UseOAuthAuthorizationServer("PureCloud", options=>
             //{
-                
+
             //});
         }
     }

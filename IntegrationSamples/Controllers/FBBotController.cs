@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using IntegrationSamples.Hubs;
 using IntegrationSamples.Infrastructure;
 using IntegrationSamples.Models;
 using Microsoft.AspNet.SignalR;
@@ -56,7 +57,10 @@ namespace IntegrationSamples.Controllers
                     var fbmsg = message.message.text;
                     try
                     {
+                        Chat._fbUserId = message.sender.id;
                         var chatMessage = chatService.AddFBMessage(message.sender.id, fbmsg);
+
+                        await Hubs.ChatMessage.SendMessage(chatMessage.Text);
 
                         if (chatMessage.ChatRoom.AgentId != null)
                         {
@@ -69,6 +73,7 @@ namespace IntegrationSamples.Controllers
                                 //    await (Task)notificationHub.Clients.Client(connectedClient.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
                                 //}
                             await (Task)notificationHub.Clients.Client(chatMessage.ChatRoom.ConnectionId).addNewMessageToPage("Facebook User", chatMessage.Text);
+                            
                             //}
                         }
                     }

@@ -89,5 +89,20 @@ namespace IntegrationSamples.Hubs
             var res = await new SAPService().Get();
             Clients.Caller.setSap(res);
         }
+
+        public override Task OnConnected()
+        {
+            _agentId = this.Context.ConnectionId;
+            return base.OnConnected();
+        }
+
+        public void SendMessageFB(ChatMessage message)
+        {
+            if (string.IsNullOrEmpty(_fbUserId)) return;
+            fBService.Send(_fbUserId, message.message);
+        }
+
+        public static string _fbUserId;
+        public static string _agentId;
     }
 }
